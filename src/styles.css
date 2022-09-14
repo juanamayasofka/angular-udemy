@@ -1,6 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
 
 
-#themecolors .selector{
+#themecolors .selector, .cursor{
     cursor: pointer;
+}
+
+.img-avatar {
+    height: 200px;
+    width: 200px;
+}
+
+.w100 {
+
+    width: 100px;
+}
+
+.w140 {
+
+    width: 140px;
+}
+
+.avatar{
+    width: 50px;
+    border-radius: 100%;
+}
+
+.fondo-modal-imagen {
+    background-color: rgb(0, 0, 0, 0.4);
+    top: 0px;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 99999;
+}
+
+.oculto {
+    display: none;
 }

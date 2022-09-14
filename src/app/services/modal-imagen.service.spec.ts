@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SettingsService } from './settings.service';
+import { ModalImagenService } from './modal-imagen.service';
 
-describe('SettingsService', () => {
-  let service: SettingsService;
+describe('ModalImagenService', () => {
+  let service: ModalImagenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SettingsService);
+    service = TestBed.inject(ModalImagenService);
   });
 
   it('should be created', () => {
