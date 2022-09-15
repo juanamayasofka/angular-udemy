@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { validationResult } from 'express-validator';
+import { delay, Subscribable, Subscription } from 'rxjs';
+import { ModalImagenComponent } from 'src/app/components/modal-imagen/modal-imagen.component';
 import { Usuario } from 'src/app/models/usuario.model';
 import { BusquedasService } from 'src/app/services/busquedas.service';
+import { ModalImagenService } from 'src/app/services/modal-imagen.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 
@@ -11,20 +14,37 @@ import Swal from 'sweetalert2';
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.css']
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
 
   public totalUsuarios : number = 0;
   public usuarios: Usuario[] = [];
   public usuariosTmp: Usuario[] = [];
   public desde: number = 0;
   public cargando: boolean = true;
+  public imagSub?: Subscription;
+
 
   constructor( private usuariosService: UsuarioService,
                private sanitizer: DomSanitizer,
-               private busquedaService: BusquedasService) { }
+               private busquedaService: BusquedasService,
+               private modalImgService: ModalImagenService) { }
+
+
+  ngOnDestroy(): void {
+    this.imagSub?.unsubscribe();
+  }
 
   ngOnInit(): void {
    this.cargarUsuarios();
+
+   this.imagSub = this.modalImgService.nuevaImagen
+                      .pipe(
+                        delay(200)
+                      ) 
+                      .subscribe( img => {
+                        console.log(img)
+                        this.cargarUsuarios();
+                      })
   }
 
   public getSantizerUrl( url: string){
@@ -64,20 +84,21 @@ export class UsuariosComponent implements OnInit {
     
     if( termino.length === 0){
        this.usuarios = this.usuariosTmp;
-    }
-
-    this.busquedaService.buscar('usuarios', termino)
+    }else{
+      this.busquedaService.buscar('usuarios', termino)
     .subscribe(resultados => {
      return this.usuarios = resultados;
       
     })
+    }
 
     return this.usuarios;
   }
 
 
   eliminarUsuario( usuario: Usuario ){
-    console.log(usuario);
+    console.log(usuario.uid);
+    console.log("ser ",this.usuariosService.usuario.uid);
 
     if( usuario.uid === this.usuariosService.usuario.uid){
       return Swal.fire('Error no puede eliminarse','error');
@@ -102,7 +123,7 @@ export class UsuariosComponent implements OnInit {
           });
       }
     })
-    return Swal.fire('Error no puede eliminarse','error'); 
+    return;
   }
 
   cambiarRole( usuario: Usuario){
@@ -111,5 +132,12 @@ export class UsuariosComponent implements OnInit {
       console.log(resp);
       
     })
+  }
+
+
+  abrirModal( usuario: Usuario ){
+    
+    this.modalImgService.abrirModal( 'usuarios', usuario.uid, usuario.img );
+    
   }
 }

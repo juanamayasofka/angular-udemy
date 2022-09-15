@@ -29,6 +29,10 @@ export class BusquedasService {
     return resultados.map( user => new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uid ));
   }
 
+  private transUHospitales( resultados: any[]): Usuario[]{
+    return resultados.map( user => new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uid ));
+  }
+
   buscar( tipo: 'usuarios'|'medicos'|'hospitales', termino: string){
     const url = `${base_url}/todo/coleccion/${ tipo }/${ termino }`;
     return this.http.get<any[]>( url, this.headers)
@@ -39,7 +43,14 @@ export class BusquedasService {
                 case 'usuarios':
                   return this.transUsuarios(resp.resultados);
                   
-              
+                case 'hospitales':
+                    console.log(resp);
+                    
+                    return resp.resultados;
+                case 'medicos':
+                  console.log(resp);
+                  
+                  return resp.resultados;
                 default:
                   return []
                   

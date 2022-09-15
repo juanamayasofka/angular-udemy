@@ -10,7 +10,6 @@ import { RegisterForm } from '../interfaces/register-form.interfaces';
 import { Usuario } from '../models/usuario.model';
 
 
-
 declare const google: any;
 
 const base_url = environment.base_url;
@@ -23,8 +22,8 @@ export class UsuarioService {
   public usuario!: Usuario;
 
   constructor( private http: HttpClient,
-    private router:Router,
-    private ngZona: NgZone) { }
+            private router:Router,
+            private ngZona: NgZone) { }
 
     get token(): string {
       return localStorage.getItem('token') || '';

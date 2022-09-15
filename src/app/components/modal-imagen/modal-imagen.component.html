@@ -1,4 +1,4 @@
-<div class="fondo-modal-imagen oculto" [class.oculto]="ocultarModal">
+<div class="fondo-modal-imagen oculto" [class.oculto]="modalService.ocultarModal">
     <div class="modal fade show" 
     id="exampleModal"
         tabindex="-1" 
@@ -19,6 +19,29 @@
         </div>
         <div class="modal-body">
             <h3>Seleccione una iamgen</h3>
+            <div class="col-md-12">
+                <div class="card-body">
+                    
+                        <h4 class="card-title">Avatar</h4>
+                        <h6 class="card-subtitle">Imagen del usuario</h6>
+                        <div class="text-center">
+                            <img *ngIf="!imgTemp" [src]="modalService.img" class="img-avatar">
+                            <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+                        </div>
+                        
+                        <input type="file" (change)="cambiarImagen($event)">
+                        <br>
+                        <br>
+                        <button type="button"
+                        [disabled]="!imagenSubir"
+                        (click)="subirImagen()"
+                         class="btn btn-block btn-success waves-effect waves-light m-r-10"
+                         >
+                            <i class="fa fa-save"></i>
+                            Cambiar Imagen</button>
+            
+                    </div>
+                </div>
         </div>
         <div class="modal-footer">
             <button type="button" (click)="cerrarModal()" class="btn btn-default" data-dismiss="modal">Cancelar</button>
